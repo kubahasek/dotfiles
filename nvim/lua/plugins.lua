@@ -1,94 +1,96 @@
 return require('packer').startup(function(use)
-	
-        -- Packer can manage itself
-	    use 'wbthomason/packer.nvim'
 
-        -- Discord Presence
-	    use {
+  -- Packer can manage itself
+  use 'wbthomason/packer.nvim'
 
-                'andweeb/presence.nvim',
-                config = [[ require("plugins/discordconfig") ]]
+  -- Discord Presence
+  use {
 
-	    }
-	
-        -- Fuzzy Finder (Telescope)
-        use {
-                'nvim-telescope/telescope.nvim', tag = '0.1.0',
-                requires = { {'nvim-lua/plenary.nvim'} },
-                config = [[ require("plugins/telescope") ]]
-	    }
+    'andweeb/presence.nvim',
+    config = [[ require("plugins/discordconfig") ]]
 
-        -- null-ls
-        use { "jose-elias-alvarez/null-ls.nvim", config = [[ require("plugins/nullls") ]] }
+  }
 
-	    -- treesitter
-        use {
-                'nvim-treesitter/nvim-treesitter',
-                run = ':TSUpdate'
-    	}
+  -- Fuzzy Finder (Telescope)
+  use {
+    'nvim-telescope/telescope.nvim', tag = '0.1.0',
+    requires = { { 'nvim-lua/plenary.nvim' } },
+    config = [[ require("plugins/telescope") ]]
+  }
 
-        -- file browser
-	    use { "nvim-telescope/telescope-file-browser.nvim", config = [[ require("plugins/telescope-file-browser") ]] }
-	
+  -- null-ls
+  use { "jose-elias-alvarez/null-ls.nvim", config = [[ require("plugins/nullls") ]] }
 
-        -- theme
-        use {
-                "catppuccin/nvim",
-                as = "catppuccin",
-                config = function()
-                        vim.g.catppuccin_flavour = "mocha" -- latte, frappe, macchiato, mocha
-                        require("catppuccin").setup()
-                        vim.api.nvim_command "colorscheme catppuccin"
-		        end
-	    }
+  -- treesitter
+  use {
+    'nvim-treesitter/nvim-treesitter',
+    run = ':TSUpdate'
+  }
 
-        -- lspconfig
-        use {
-                'neovim/nvim-lspconfig',-- Configurations for Nvim LSP
-		        config = [[require("plugins/lspconfig")]]
-	    }
-
-        -- autocompletion
-        use { 'hrsh7th/cmp-nvim-lsp', config = [[ require("plugins/cmp") ]] }
-        use 'hrsh7th/cmp-buffer'
-        use 'hrsh7th/cmp-path'
-        use 'hrsh7th/cmp-cmdline'
-        use 'hrsh7th/nvim-cmp'
-        use 'hrsh7th/cmp-nvim-lsp-signature-help'
-
-        -- snippets
-        use 'hrsh7th/cmp-vsnip'
-        use 'hrsh7th/vim-vsnip'
-        use "rafamadriz/friendly-snippets"
-        -- surround
-        use({
-            "kylechui/nvim-surround",
-            tag = "*", -- Use for stability; omit to use `main` branch for the latest features
-            config = [[ require("plugins/surround") ]]
-        })
+  -- file browser
+  use { "nvim-telescope/telescope-file-browser.nvim", config = [[ require("plugins/telescope-file-browser") ]] }
 
 
-	    -- bufferline
-        use {'akinsho/bufferline.nvim', tag = "v3.*", requires = 'kyazdani42/nvim-web-devicons', config = [[ require("plugins/bufferline") ]]}
+  -- theme
+  use {
+    "catppuccin/nvim",
+    as = "catppuccin",
+    config = function()
+      vim.g.catppuccin_flavour = "mocha" -- latte, frappe, macchiato, mocha
+      require("catppuccin").setup()
+      vim.api.nvim_command "colorscheme catppuccin"
+    end
+  }
 
-        -- gitsigns
-        use {
-                'lewis6991/gitsigns.nvim',
-                tag = 'release',
-                config = [[ require("plugins/gitsigns") ]]
-        }
+  -- lspconfig
+  use {
+    'neovim/nvim-lspconfig', -- Configurations for Nvim LSP
+    config = [[require("plugins/lspconfig")]]
+  }
 
-        -- lualine
-        use {
-                'nvim-lualine/lualine.nvim',
-                config = [[ require("plugins/lualine") ]]
-        }
+  -- autocompletion
+  use { 'hrsh7th/cmp-nvim-lsp', config = [[ require("plugins/cmp") ]] }
+  use 'hrsh7th/cmp-buffer'
+  use 'hrsh7th/cmp-path'
+  use 'hrsh7th/cmp-cmdline'
+  use 'hrsh7th/nvim-cmp'
+  use 'hrsh7th/cmp-nvim-lsp-signature-help'
 
-        use { "williamboman/mason-lspconfig.nvim" }
-        use { "williamboman/mason.nvim", config = [[ require("plugins/mason") ]] }
-        -- php formatter
-        -- use { 'praem90/nvim-phpcsf', config = [[ require("plugins/phpcsf") ]]}
+  -- snippets
+  use 'hrsh7th/cmp-vsnip'
+  use 'hrsh7th/vim-vsnip'
+  use "rafamadriz/friendly-snippets"
+  -- surround
+  use({
+    "kylechui/nvim-surround",
+    tag = "*", -- Use for stability; omit to use `main` branch for the latest features
+    config = [[ require("plugins/surround") ]]
+  })
 
-        use "wakatime/vim-wakatime"
+
+  -- bufferline
+  use { 'akinsho/bufferline.nvim', tag = "v3.*", requires = 'kyazdani42/nvim-web-devicons',
+    config = [[ require("plugins/bufferline") ]] }
+
+  -- gitsigns
+  use {
+    'lewis6991/gitsigns.nvim',
+    tag = 'release',
+    config = [[ require("plugins/gitsigns") ]]
+  }
+
+  -- lualine
+  use {
+    'nvim-lualine/lualine.nvim',
+    config = [[ require("plugins/lualine") ]]
+  }
+
+  -- mason
+  use { "williamboman/mason-lspconfig.nvim" }
+  use { "williamboman/mason.nvim", config = [[ require("plugins/mason") ]] }
+  use { "WhoIsSethDaniel/mason-tool-installer.nvim", config = [[ require("plugins/mason") ]] }
+  -- php formatter
+  -- use { 'praem90/nvim-phpcsf', config = [[ require("plugins/phpcsf") ]]}
+
+  use "wakatime/vim-wakatime"
 end)
-
