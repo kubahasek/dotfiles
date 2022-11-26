@@ -219,10 +219,6 @@ _G.packer_plugins = {
 }
 
 time([[Defining packer_plugins]], false)
--- Config for: bufferline.nvim
-time([[Config for bufferline.nvim]], true)
- require("plugins/bufferline") 
-time([[Config for bufferline.nvim]], false)
 -- Config for: mason.nvim
 time([[Config for mason.nvim]], true)
  require("plugins/mason") 
@@ -231,42 +227,46 @@ time([[Config for mason.nvim]], false)
 time([[Config for null-ls.nvim]], true)
  require("plugins/nullls") 
 time([[Config for null-ls.nvim]], false)
--- Config for: nvim-surround
-time([[Config for nvim-surround]], true)
- require("plugins/surround") 
-time([[Config for nvim-surround]], false)
--- Config for: nvim-lspconfig
-time([[Config for nvim-lspconfig]], true)
-require("plugins/lspconfig")
-time([[Config for nvim-lspconfig]], false)
--- Config for: telescope.nvim
-time([[Config for telescope.nvim]], true)
- require("plugins/telescope") 
-time([[Config for telescope.nvim]], false)
--- Config for: gitsigns.nvim
-time([[Config for gitsigns.nvim]], true)
- require("plugins/gitsigns") 
-time([[Config for gitsigns.nvim]], false)
--- Config for: presence.nvim
-time([[Config for presence.nvim]], true)
- require("plugins/discordconfig") 
-time([[Config for presence.nvim]], false)
--- Config for: lualine.nvim
-time([[Config for lualine.nvim]], true)
- require("plugins/lualine") 
-time([[Config for lualine.nvim]], false)
--- Config for: cmp-nvim-lsp
-time([[Config for cmp-nvim-lsp]], true)
- require("plugins/cmp") 
-time([[Config for cmp-nvim-lsp]], false)
 -- Config for: telescope-file-browser.nvim
 time([[Config for telescope-file-browser.nvim]], true)
  require("plugins/telescope-file-browser") 
 time([[Config for telescope-file-browser.nvim]], false)
+-- Config for: nvim-lspconfig
+time([[Config for nvim-lspconfig]], true)
+require("plugins/lspconfig")
+time([[Config for nvim-lspconfig]], false)
+-- Config for: presence.nvim
+time([[Config for presence.nvim]], true)
+ require("plugins/discordconfig") 
+time([[Config for presence.nvim]], false)
+-- Config for: gitsigns.nvim
+time([[Config for gitsigns.nvim]], true)
+ require("plugins/gitsigns") 
+time([[Config for gitsigns.nvim]], false)
+-- Config for: cmp-nvim-lsp
+time([[Config for cmp-nvim-lsp]], true)
+ require("plugins/cmp") 
+time([[Config for cmp-nvim-lsp]], false)
 -- Config for: catppuccin
 time([[Config for catppuccin]], true)
 try_loadstring("\27LJ\2\n£\1\0\0\3\0\n\0\0156\0\0\0009\0\1\0'\1\3\0=\1\2\0006\0\4\0'\2\5\0B\0\2\0029\0\6\0B\0\1\0016\0\0\0009\0\a\0009\0\b\0'\2\t\0B\0\2\1K\0\1\0\27colorscheme catppuccin\17nvim_command\bapi\nsetup\15catppuccin\frequire\nmocha\23catppuccin_flavour\6g\bvim\0", "config", "catppuccin")
 time([[Config for catppuccin]], false)
+-- Config for: lualine.nvim
+time([[Config for lualine.nvim]], true)
+ require("plugins/lualine") 
+time([[Config for lualine.nvim]], false)
+-- Config for: telescope.nvim
+time([[Config for telescope.nvim]], true)
+ require("plugins/telescope") 
+time([[Config for telescope.nvim]], false)
+-- Config for: nvim-surround
+time([[Config for nvim-surround]], true)
+ require("plugins/surround") 
+time([[Config for nvim-surround]], false)
+-- Config for: bufferline.nvim
+time([[Config for bufferline.nvim]], true)
+ require("plugins/bufferline") 
+time([[Config for bufferline.nvim]], false)
 
 _G._packer.inside_compile = false
 if _G._packer.needs_bufread == true then
