@@ -1,6 +1,7 @@
 tap "fsouza/prettierd"
 tap "homebrew/bundle"
 tap "homebrew/cask"
+tap "homebrew/cask-fonts"
 tap "homebrew/core"
 tap "homebrew/services"
 tap "planetscale/tap"
@@ -59,3 +60,6 @@ cask "visual-studio-code"
 cask "figma"
 cask "obs"
 cask "xampp"
+
+# cask-fonts
+cask "font-fira-mono-nerd-font"
