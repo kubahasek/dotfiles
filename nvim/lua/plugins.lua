@@ -48,6 +48,8 @@ return require('packer').startup(function(use)
     config = [[require("plugins/lspconfig")]]
   }
 
+  use { "folke/trouble.nvim", requires = "kyazdani42/nvim-web-devicons", config = [[ require("plugins/trouble") ]] }
+
   -- autocompletion
   use { 'hrsh7th/cmp-nvim-lsp', config = [[ require("plugins/cmp") ]] }
   use 'hrsh7th/cmp-buffer'

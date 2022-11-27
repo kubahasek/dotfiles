@@ -10,12 +10,12 @@ vim.keymap.set('n', 'fh', builtin.help_tags, {})
 vim.keymap.set("n", "<space>fb", ":Telescope file_browser<CR>", { noremap = true })
 
 -- bufferline
-vim.keymap.set('n', "<leader>bc",  ":bdelete<CR>", { noremap = true })
-vim.keymap.set('n', "<leader>bn",  ":bnext<CR>", { noremap = true })
-vim.keymap.set('n', "<leader>bp",  ":bprev<CR>", { noremap = true })
+vim.keymap.set('n', "<leader>bc", ":bdelete<CR>", { noremap = true })
+vim.keymap.set('n', "<leader>bn", ":bnext<CR>", { noremap = true })
+vim.keymap.set('n', "<leader>bp", ":bprev<CR>", { noremap = true })
 
 -- null-ls
 vim.keymap.set('n', '<leader>f', ':vim.lsp.buf.format({ timeout_ms = 10000 })')
 
-
-
+-- trouble
+vim.keymap.set("n", '<leader>xx', ':TroubleToggle<cr>')
