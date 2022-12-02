@@ -1,4 +1,4 @@
-require('telescope').setup{
+require('telescope').setup {
   defaults = {
     -- Default configuration for telescope goes here:
     -- config_key = value,
@@ -12,9 +12,15 @@ require('telescope').setup{
     }
   },
   pickers = {
-        buffers = {
-                initial_mode = "normal"
-          }
+    buffers = {
+      initial_mode = "normal"
+    },
+    find_files = {
+      find_command = { 'rg', '--files', '--hidden', '-g', '!.git' },
+    },
+    file_browser = {
+      hidden = true,
+    },
     -- Default configuration for builtin pickers goes here:
     -- picker_name = {
     --   picker_config_key = value,
@@ -24,8 +30,8 @@ require('telescope').setup{
     -- builtin picker
   },
   extensions = {
-	file_browser = {}
+    file_browser = {
+    },
   }
 }
-
-require("telescope").load_extension("file_browser")
+require("telescope").load_extension "file_browser"

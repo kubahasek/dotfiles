@@ -11,6 +11,8 @@ return require('packer').startup(function(use)
 
   }
 
+  -- file-browser
+  use { "nvim-telescope/telescope-file-browser.nvim" }
   -- Fuzzy Finder (Telescope)
   use {
     'nvim-telescope/telescope.nvim', tag = '0.1.0',
@@ -26,9 +28,6 @@ return require('packer').startup(function(use)
     'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate'
   }
-
-  -- file browser
-  use { "nvim-telescope/telescope-file-browser.nvim", config = [[ require("plugins/telescope-file-browser") ]] }
 
 
   -- theme

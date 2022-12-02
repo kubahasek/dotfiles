@@ -11,6 +11,7 @@ require("mason-tool-installer").setup {
     "tailwindcss-language-server",
     "typescript-language-server",
     "prettierd",
+    "deno",
   }
 }
 require("mason-lspconfig").setup()

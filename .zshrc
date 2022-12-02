@@ -139,6 +139,8 @@ alias vim="nvim"
 export PATH="/usr/local/opt/python@3.10/bin:$PATH"
 export PATH="/usr/local/opt/python@3.10/bin:$PATH"
 export PATH="/usr/local/opt/python@3.10/bin:$PATH"
+export DENO_INSTALL="/Users/jakubhasek/.deno"
+export PATH="$DENO_INSTALL/bin:$PATH"
 
 # Fig post block. Keep at the bottom of this file.
 [[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"
