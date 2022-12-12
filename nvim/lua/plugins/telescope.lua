@@ -20,6 +20,7 @@ require('telescope').setup {
     },
     file_browser = {
       hidden = true,
+      files = true,
     },
     -- Default configuration for builtin pickers goes here:
     -- picker_name = {

@@ -29,6 +29,8 @@ return require('packer').startup(function(use)
     run = ':TSUpdate'
   }
 
+  -- comment line
+  use { "terrortylor/nvim-comment", config = [[ require("plugins/comment") ]] }
 
   -- theme
   use {
@@ -56,6 +58,8 @@ return require('packer').startup(function(use)
   use 'hrsh7th/cmp-cmdline'
   use 'hrsh7th/nvim-cmp'
   use 'hrsh7th/cmp-nvim-lsp-signature-help'
+
+  use { "tpope/vim-fugitive" }
 
   -- snippets
   use 'hrsh7th/cmp-vsnip'
