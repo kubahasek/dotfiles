@@ -61,6 +61,12 @@ return require('packer').startup(function(use)
     -- comment line
     use { "terrortylor/nvim-comment" }
 
+    -- gitsigns
+    use {
+        'lewis6991/gitsigns.nvim',
+        tag = 'release'
+    }
+
     -- surround
     use({
         "kylechui/nvim-surround",
