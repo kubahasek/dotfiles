@@ -11,6 +11,11 @@ return require('packer').startup(function(use)
     -- null-ls
     use { "jose-elias-alvarez/null-ls.nvim" }
 
+    -- duck
+    use {
+        'tamton-aquib/duck.nvim'
+    }
+
 
     use {
 
