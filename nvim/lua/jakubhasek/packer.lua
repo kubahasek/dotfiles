@@ -28,6 +28,11 @@ return require('packer').startup(function(use)
         vim.cmd.colorscheme "catppuccin-mocha"
     end }
 
+    use {
+        "folke/todo-comments.nvim",
+        requires = "nvim-lua/plenary.nvim",
+    }
+
     use('nvim-treesitter/nvim-treesitter', { run = ':TSUpdate' })
     use('ThePrimeagen/harpoon')
 

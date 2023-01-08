@@ -110,6 +110,11 @@ _G.packer_plugins = {
     path = "/Users/jakubhasek/.local/share/nvim/site/pack/packer/start/cmp_luasnip",
     url = "https://github.com/saadparwaiz1/cmp_luasnip"
   },
+  ["duck.nvim"] = {
+    loaded = true,
+    path = "/Users/jakubhasek/.local/share/nvim/site/pack/packer/start/duck.nvim",
+    url = "https://github.com/tamton-aquib/duck.nvim"
+  },
   ["friendly-snippets"] = {
     loaded = true,
     path = "/Users/jakubhasek/.local/share/nvim/site/pack/packer/start/friendly-snippets",
@@ -199,6 +204,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/jakubhasek/.local/share/nvim/site/pack/packer/start/telescope.nvim",
     url = "https://github.com/nvim-telescope/telescope.nvim"
+  },
+  ["todo-comments.nvim"] = {
+    loaded = true,
+    path = "/Users/jakubhasek/.local/share/nvim/site/pack/packer/start/todo-comments.nvim",
+    url = "https://github.com/folke/todo-comments.nvim"
   },
   ["trouble.nvim"] = {
     loaded = true,
