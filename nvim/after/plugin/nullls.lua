@@ -6,6 +6,7 @@ require("null-ls").setup({
         require("null-ls").builtins.formatting.phpcbf,
         require("null-ls").builtins.diagnostics.psalm,
         require("null-ls").builtins.formatting.csharpier,
+        require("null-ls").builtins.code_actions.eslint_d,
     },
     on_attach = function(client, bufnr)
         if client.supports_method("textDocument/formatting") then
