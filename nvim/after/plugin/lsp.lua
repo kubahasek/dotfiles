@@ -2,15 +2,13 @@ local lsp = require('lsp-zero')
 
 lsp.preset('recommended')
 lsp.ensure_installed({
-  'tsserver',
-  'sumneko_lua',
-  "csharp_ls",
-  "tailwindcss",
+    'tsserver',
+    "csharp_ls",
+    "tailwindcss",
 })
 
 lsp.on_attach(function(client, bufnr)
     local opts = { buffer = bufnr, remap = false }
-    print("connected")
     if client.name == "eslint" then
         vim.cmd.LspStop('eslint')
         return
