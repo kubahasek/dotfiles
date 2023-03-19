@@ -144,12 +144,12 @@ export PATH="/usr/local/opt/python@3.10/bin:$PATH"
 export DENO_INSTALL="/Users/jakubhasek/.deno"
 export PATH="$DENO_INSTALL/bin:$PATH"
 
-# Fig post block. Keep at the bottom of this file.
-[[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"
-
 # bun completions
 [ -s "/Users/jakubhasek/.bun/_bun" ] && source "/Users/jakubhasek/.bun/_bun"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# Fig post block. Keep at the bottom of this file.
+[[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"
