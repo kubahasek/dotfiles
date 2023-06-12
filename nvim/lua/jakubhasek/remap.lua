@@ -13,6 +13,15 @@ vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
 
+vim.keymap.set('n', '<leader>h', ':FocusSplitLeft<CR>', { silent = true })
+vim.keymap.set('n', '<leader>j', ':FocusSplitDown<CR>', { silent = true })
+vim.keymap.set('n', '<leader>k', ':FocusSplitUp<CR>', { silent = true })
+vim.keymap.set('n', '<leader>l', ':FocusSplitRight<CR>', { silent = true })
+
+vim.keymap.set('n', '<leader>ft', ':NvimTreeToggle<CR>')
+
+vim.keymap.set({ 'n' }, '<C-k>', function()       require('lsp_signature').toggle_float_win()
+end, { silent = true, noremap = true, desc = 'toggle signature' })
 -- greatest remap ever
 vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 vim.keymap.set("x", "<leader>p", [["_dP]])

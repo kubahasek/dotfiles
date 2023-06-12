@@ -11,11 +11,7 @@ return require('packer').startup(function(use)
     -- null-ls
     use { "jose-elias-alvarez/null-ls.nvim" }
 
-    -- duck
-    use {
-        'tamton-aquib/duck.nvim'
-    }
-
+    use {"github/copilot.vim"}
 
     use {
 
@@ -23,6 +19,9 @@ return require('packer').startup(function(use)
         -- or                            , branch = '0.1.x',
         requires = { { 'nvim-lua/plenary.nvim' } }
     }
+
+    use("kyazdani42/nvim-web-devicons")
+	use("kyazdani42/nvim-tree.lua")
 
     use { "catppuccin/nvim", as = "catppuccin", config = function()
         vim.cmd.colorscheme "catppuccin-mocha"
@@ -33,8 +32,32 @@ return require('packer').startup(function(use)
         requires = "nvim-lua/plenary.nvim",
     }
 
+    use {
+      "ray-x/lsp_signature.nvim",
+    }
+
+    use { "beauwilliams/focus.nvim", config = function() require("focus").setup() end }
+
+    use {
+      'rmagatti/auto-session',
+      config = function()
+        require("auto-session").setup {
+          log_level = "error",
+          auto_session_suppress_dirs = { "~/", "~/Projects", "~/Downloads", "/"},
+        }
+      end
+    }
+
+
     use('nvim-treesitter/nvim-treesitter', { run = ':TSUpdate' })
+    use("windwp/nvim-ts-autotag")
+    use {
+    "windwp/nvim-autopairs",
+    config = function() require("nvim-autopairs").setup {} end
+    }
     use('ThePrimeagen/harpoon')
+
+    use("windwp/windline.nvim")
 
     -- mason
     use { "williamboman/mason-lspconfig.nvim" }
@@ -79,8 +102,7 @@ return require('packer').startup(function(use)
 
     -- surround
     use({
-        "kylechui/nvim-surround",
-        tag = "*" -- Use for stability; omit to use `main` branch for the latest features
+        "tpope/vim-surround",
     })
 
     use "wakatime/vim-wakatime"
