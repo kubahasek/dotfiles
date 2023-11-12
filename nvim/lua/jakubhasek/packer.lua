@@ -109,4 +109,7 @@ return require('packer').startup(function(use)
 
     use { "kdheepak/lazygit.nvim" }
 
+    use 'lewis6991/gitsigns.nvim' -- OPTIONAL: for git status
+    use 'romgrk/barbar.nvim'
+
 end)

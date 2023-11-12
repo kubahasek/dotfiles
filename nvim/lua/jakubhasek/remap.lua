@@ -41,3 +41,45 @@ vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 vim.keymap.set("n", "<leader>lg", "<cmd>LazyGit<CR>")
+
+--barbar
+-- Move to previous/next
+vim.keymap.set('n', '<C-,>', '<Cmd>BufferPrevious<CR>', opts)
+vim.keymap.set('n', '<C-.>', '<Cmd>BufferNext<CR>', opts)
+-- Re-order to previous/next
+vim.keymap.set('n', '<A-<>', '<Cmd>BufferMovePrevious<CR>', opts)
+vim.keymap.set('n', '<A->>', '<Cmd>BufferMoveNext<CR>', opts)
+-- Goto buffer in position...
+vim.keymap.set('n', '<C-+>', '<Cmd>BufferGoto 1<CR>', opts)
+vim.keymap.set('n', '<C-ě>', '<Cmd>BufferGoto 2<CR>', opts)
+vim.keymap.set('n', '<C-š>', '<Cmd>BufferGoto 3<CR>', opts)
+vim.keymap.set('n', '<C-č>', '<Cmd>BufferGoto 4<CR>', opts)
+vim.keymap.set('n', '<C-é>', '<Cmd>BufferGoto 5<CR>', opts)
+vim.keymap.set('n', '<C-ž>', '<Cmd>BufferGoto 6<CR>', opts)
+vim.keymap.set('n', '<C-ý>', '<Cmd>BufferGoto 7<CR>', opts)
+vim.keymap.set('n', '<C-á>', '<Cmd>BufferGoto 8<CR>', opts)
+vim.keymap.set('n', '<C-í>', '<Cmd>BufferGoto 9<CR>', opts)
+vim.keymap.set('n', '<C-é>', '<Cmd>BufferLast<CR>', opts)
+-- Pin/unpin buffer
+vim.keymap.set('n', '<A-p>', '<Cmd>BufferPin<CR>', opts)
+-- Close buffer
+vim.keymap.set('n', '<C-c>', '<Cmd>BufferClose<CR>', opts)
+-- Wipeout buffer
+--                 :BufferWipeout
+-- Close commands
+--                 :BufferCloseAllButCurrent
+--                 :BufferCloseAllButPinned
+--                 :BufferCloseAllButCurrentOrPinned
+--                 :BufferCloseBuffersLeft
+--                 :BufferCloseBuffersRig
+-- Magic buffer-picking mode
+vim.keymap.set('n', '<C-p>', '<Cmd>BufferPick<CR>', opts)
+-- Sort automatically by...
+vim.keymap.set('n', '<Space>bb', '<Cmd>BufferOrderByBufferNumber<CR>', opts)
+vim.keymap.set('n', '<Space>bd', '<Cmd>BufferOrderByDirectory<CR>', opts)
+vim.keymap.set('n', '<Space>bl', '<Cmd>BufferOrderByLanguage<CR>', opts)
+vim.keymap.set('n', '<Space>bw', '<Cmd>BufferOrderByWindowNumber<CR>', opts)
+
+-- Other:
+-- :BarbarEnable - enables barbar (enabled by default)
+-- :BarbarDisable - very bad command, should never be used
