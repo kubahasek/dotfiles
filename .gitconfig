@@ -1,3 +1,14 @@
 [user]
-	email = 28836407+kubahasek@users.noreply.github.com
+	email = hasek.kuba@hotmail.cz
 	name = Jakub Hašek
+	signingKey = 
+[gpg]
+	format = openpgp
+	program = /usr/local/bin/gpg
+[commit]
+	gpgsign = false
+[tag]
+	forceSignAnnotated = false
+[gpg "ssh"]
+	program = ssh-keygen
+	allowedSignersFile = 

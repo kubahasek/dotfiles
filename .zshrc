@@ -119,6 +119,8 @@ alias vim="nvim"
 alias gu="sh ~/Dev/gitUser.sh "
 alias lg="lazygit"
 alias cdd="cd ~/Developer"
+alias ddup="cd docker && docker compose up"
+alias dup="docker compose up"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
@@ -151,7 +153,7 @@ nd () {
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-  export NVM_DIR="$HOME/.nvm"
+export NVM_DIR="$HOME/.nvm"
   [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
   [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 export PATH="/opt/homebrew/opt/php@7.2/bin:$PATH"
