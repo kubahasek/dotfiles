@@ -1,5 +1,5 @@
 [user]
-	email = hasek.kuba@hotmail.cz
+	email = hasek@akip.cz
 	name = Jakub Hašek
 	signingKey = 
 [gpg]
@@ -12,3 +12,5 @@
 [gpg "ssh"]
 	program = ssh-keygen
 	allowedSignersFile = 
+[core]
+	autocrlf = input
