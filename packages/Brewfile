@@ -1,0 +1,213 @@
+tap "anomalyco/tap"
+tap "blackmann/brew"
+tap "can1357/tap"
+tap "eugenmayer/dockersync"
+tap "exolnet/deprecated"
+tap "fsouza/prettierd"
+tap "libsql/sqld"
+tap "oven-sh/bun"
+tap "planetscale/tap"
+tap "shivammathur/php"
+tap "steipete/tap"
+tap "stripe/stripe-cli"
+tap "tursodatabase/tap"
+tap "tw93/tap"
+# Codec library for encoding and decoding AV1 video streams
+brew "aom"
+# Asynchronous DNS library
+brew "c-ares"
+# SIMD-accelerated C++ JSON parser
+brew "simdjson"
+# General-purpose data compression with high compression ratio
+brew "xz"
+# Open-source, cross-platform JavaScript runtime environment
+brew "node"
+# Secure and free password manager for all of your devices
+brew "bitwarden-cli"
+# Collection of portable C++ source libraries
+brew "boost"
+# Resource monitor. C++ version and continuation of bashtop and bpytop
+brew "btop"
+# Vector graphics library with cross-device output support
+brew "cairo"
+# New file format for still image compression
+brew "jpeg-xl"
+# Library for encoding and decoding .avif files
+brew "libavif"
+# General-purpose scripting language
+brew "php", link: false
+# Dependency Manager for PHP
+brew "composer"
+# Platform keystore credential helper for Docker
+brew "docker-credential-helper"
+# Collection of reusable C++ library artifacts developed at Facebook
+brew "folly"
+# C++14 implementation of the TLS-1.3 standard
+brew "fizz"
+# Modular, composable client/server abstractions framework
+brew "wangle"
+# Facebook's branch of Apache Thrift, including a new C++ server
+brew "fbthrift"
+# Thrift functions for querying information from a service
+brew "fb303"
+# Shared library for Watchman and Eden projects
+brew "edencommon"
+# Play, record, convert, and stream select audio and video codecs
+brew "ffmpeg"
+# User-friendly command-line shell for UNIX-like operating systems
+brew "fish"
+# Command-line fuzzy finder written in Go
+brew "fzf"
+# GitHub command-line tool
+brew "gh"
+# Distributed revision control system
+brew "git"
+# Open-source GitLab command-line tool
+brew "glab"
+# OpenType text shaping engine
+brew "harfbuzz"
+# Simple terminal UI for git commands
+brew "lazygit"
+# Library for JPEG-2000 image manipulation
+brew "openjpeg"
+# Image processing and image analysis library
+brew "leptonica"
+# Subtitle renderer for the ASS/SSA subtitle format
+brew "libass"
+# Provides library functionality for FIDO U2F & FIDO 2.0, including USB
+brew "libfido2"
+# Linux virtual machines
+brew "lima"
+# Apple Silicon Monitor Top written in Go Lang
+brew "mactop"
+# Open source relational database management system
+brew "mysql"
+# Ambitious Vim-fork focused on extensibility and agility
+brew "neovim"
+# Manage multiple Node.js versions
+brew "nvm"
+# Open Visual Inference And Optimization toolkit for AI inference
+brew "openvino"
+# Swiss-army knife of markup format conversion
+brew "pandoc"
+# General-purpose scripting language
+brew "php@8.1", link: true
+# Code formatter for JavaScript, CSS, JSON, GraphQL, Markdown, YAML
+brew "prettier"
+# Prettier daemon
+brew "prettierd"
+# Pretty, minimal and fast ZSH prompt
+brew "pure"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.11"
+# Search tool like grep and The Silver Searcher
+brew "ripgrep"
+# Cross-shell prompt for astronauts
+brew "starship"
+# Organize software neatly under a single directory tree (e.g. /usr/local)
+brew "stow"
+# Send macOS User Notifications from the command-line
+brew "terminal-notifier"
+# OCR (Optical Character Recognition) engine
+brew "tesseract"
+# Terminal multiplexer
+brew "tmux"
+# File synchronization tool
+brew "unison"
+# Maintained ctags implementation
+brew "universal-ctags"
+# Generate your Xcode project from a spec file and your folder structure
+brew "xcodegen"
+# Menu bar tool to limit maximum charging percentage
+cask "aldente"
+# Enable Windows-like alt-tab
+cask "alt-tab"
+# Chromium based browser
+cask "arc"
+# Multi-track audio editor and recorder
+cask "audacity"
+# Desktop password and login vault
+cask "bitwarden"
+# Tool to remove unnecessary files and folders from disk
+cask "cleanmymac"
+# Screen capturing tool
+cask "cleanshot"
+# Tool to show live information about the batteries in various devices
+cask "coconutbattery"
+# Menu bar usage monitor for Codex and Claude
+cask "steipete/tap/codexbar"
+# Write, edit, and chat about your code with AI
+cask "cursor"
+# Voice and text chat software
+cask "discord"
+# Web browser
+cask "firefox"
+# Screen colour temperature controller
+cask "flux-app"
+cask "font-fira-mono-nerd-font"
+# Terminal emulator that uses platform-native UI and GPU acceleration
+cask "ghostty"
+# CLI for GitKraken
+cask "gitkraken-cli"
+# Web browser
+cask "google-chrome"
+# Testing client for REST, GraphQL, and HTTP APIs
+cask "httpie-desktop"
+# Free and open-source media player
+cask "iina"
+# Free cross-platform office suite, fresh version
+cask "libreoffice"
+# Provides updates to various Microsoft products
+cask "microsoft-auto-update"
+# Spreadsheet software
+cask "microsoft-excel"
+# Presentation software
+cask "microsoft-powerpoint"
+# Word processor
+cask "microsoft-word"
+# Reverse proxy, secure introspectable tunnels to localhost
+cask "ngrok"
+# App to write, plan, collaborate, and get organised
+cask "notion"
+# Calendar for professionals and teams
+cask "notion-calendar"
+# Replacement for Docker Desktop
+cask "orbstack"
+# Control your tools with a few keystrokes
+cask "raycast"
+# Team communication and collaboration software
+cask "slack"
+# Minimal GUI for AI code agents
+cask "t3-code"
+# Native GUI tool for relational databases
+cask "tableplus"
+# Unpacks archive files
+cask "the-unarchiver"
+# Rust-based terminal
+cask "warp"
+# Native desktop client for WhatsApp
+cask "whatsapp"
+# Multiplayer code editor
+cask "zed"
+# Multiplayer code editor
+cask "zed@preview"
+vscode "angular.ng-template"
+vscode "anysphere.remote-ssh"
+vscode "bmewburn.vscode-intelephense-client"
+vscode "bradlc.vscode-tailwindcss"
+vscode "dbaeumer.vscode-eslint"
+vscode "eamodio.gitlens"
+vscode "esbenp.prettier-vscode"
+vscode "leonardssh.vscord"
+vscode "ms-azuretools.vscode-containers"
+vscode "ms-azuretools.vscode-docker"
+vscode "pkief.material-icon-theme"
+vscode "usernamehw.errorlens"
+vscode "vscodevim.vim"
+vscode "wakatime.vscode-wakatime"
+npm "@earendil-works/pi-coding-agent"
+npm "@openai/codex"
+npm "@payloadr/cli"
+npm "@sourcegraph/amp"
+npm "agent-browser"
+npm "tmux-ide"

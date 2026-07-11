@@ -1,0 +1,25 @@
+# Vercel Dark – adapted from Zed Vercel Dark theme
+background = #0a0a0a
+foreground = #ededed
+cursor-color = #ededed
+cursor-text = #0a0a0a
+selection-background = #182a3b
+selection-foreground = #ededed
+
+# ANSI palette
+palette = 0=#000000
+palette = 8=#676767
+palette = 1=#f75f8f
+palette = 9=#f75f8f
+palette = 2=#62c073
+palette = 10=#62c073
+palette = 3=#ff9907
+palette = 11=#ff9907
+palette = 4=#52a8ff
+palette = 12=#52a8ff
+palette = 5=#c472fb
+palette = 13=#c472fb
+palette = 6=#1da9b0
+palette = 14=#1da9b0
+palette = 7=#a1a1a1
+palette = 15=#ededed

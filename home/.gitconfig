@@ -1,0 +1,16 @@
+[include]
+    path = ~/.config/dotfiles/gitconfig-personal
+
+[includeIf "gitdir:~/developer/"]
+    path = ~/.gitconfig-github
+
+[includeIf "gitdir:~/developer/akip/"]
+    path = ~/.gitconfig-gitlab
+
+[includeIf "gitdir:~/Developer/akip/"]
+    path = ~/.gitconfig-gitlab
+
+[rerere]
+    enabled = true
+[core]
+	excludesfile = ~/.gitignore_global

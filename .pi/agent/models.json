@@ -1,0 +1,68 @@
+{
+  "providers": {
+    "nvidia": {
+      "name": "NVIDIA NIM",
+      "baseUrl": "https://integrate.api.nvidia.com/v1",
+      "api": "openai-completions",
+      "apiKey": "$NVIDIA_API_KEY",
+      "compat": {
+        "supportsDeveloperRole": false,
+        "supportsReasoningEffort": false,
+        "supportsUsageInStreaming": false,
+        "supportsStrictMode": false,
+        "maxTokensField": "max_tokens"
+      },
+      "models": [
+        {
+          "id": "nvidia/nemotron-3-super-120b-a12b",
+          "name": "NVIDIA Nemotron 3 Super 120B",
+          "reasoning": true,
+          "contextWindow": 128000,
+          "maxTokens": 32768
+        },
+        {
+          "id": "nvidia/nemotron-3-ultra-550b-a55b",
+          "name": "NVIDIA Nemotron 3 Ultra 550B",
+          "reasoning": true,
+          "contextWindow": 128000,
+          "maxTokens": 32768
+        },
+        {
+          "id": "nvidia/llama-3.1-nemotron-ultra-253b-v1",
+          "name": "Llama 3.1 Nemotron Ultra 253B",
+          "reasoning": true,
+          "contextWindow": 128000,
+          "maxTokens": 32768
+        },
+        {
+          "id": "nvidia/llama-3.3-nemotron-super-49b-v1",
+          "name": "Llama 3.3 Nemotron Super 49B",
+          "reasoning": true,
+          "contextWindow": 128000,
+          "maxTokens": 32768
+        },
+        {
+          "id": "openai/gpt-oss-120b",
+          "name": "GPT-OSS 120B (NVIDIA NIM)",
+          "reasoning": true,
+          "contextWindow": 128000,
+          "maxTokens": 32768
+        },
+        {
+          "id": "openai/gpt-oss-20b",
+          "name": "GPT-OSS 20B (NVIDIA NIM)",
+          "reasoning": true,
+          "contextWindow": 128000,
+          "maxTokens": 32768
+        },
+        {
+          "id": "deepseek-ai/deepseek-r1",
+          "name": "DeepSeek R1 (NVIDIA NIM)",
+          "reasoning": true,
+          "contextWindow": 128000,
+          "maxTokens": 32768
+        }
+      ]
+    }
+  }
+}

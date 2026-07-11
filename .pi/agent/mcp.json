@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "readwise": {
+      "url": "https://mcp2.readwise.io/mcp",
+      "auth": "oauth",
+      "lifecycle": "lazy"
+    },
+    "notion": {
+      "url": "https://mcp.notion.com/mcp",
+      "auth": "oauth",
+      "lifecycle": "lazy"
+    }
+  }
+}

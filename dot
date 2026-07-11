@@ -1,0 +1,312 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# ── Metadata / config ────────────────────────────────────────────────────────
+readonly SCRIPT_NAME="dot"
+readonly VERSION="2.0.0"
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DOTFILES="${DOTFILES:-$SCRIPT_DIR}"
+readonly DOTFILES
+readonly HOME_DIR="$DOTFILES/home"
+readonly PACKAGES_DIR="$DOTFILES/packages"
+readonly BREWFILE="$PACKAGES_DIR/Brewfile"
+readonly PI_DIR="$DOTFILES/.pi"
+
+# Local values: credentials, identity, contact details, machine overrides.
+if [[ -f "$DOTFILES/.env" ]]; then
+  set -a
+  # shellcheck disable=SC1091
+  source "$DOTFILES/.env"
+  set +a
+fi
+
+# ── Output helpers ───────────────────────────────────────────────────────────
+if [[ -t 1 ]]; then
+  readonly RED=$'\033[0;31m' GREEN=$'\033[0;32m' YELLOW=$'\033[0;33m'
+  readonly BLUE=$'\033[0;34m' CYAN=$'\033[0;36m' BOLD=$'\033[1m' RESET=$'\033[0m'
+else
+  readonly RED='' GREEN='' YELLOW='' BLUE='' CYAN='' BOLD='' RESET=''
+fi
+
+header()  { printf '\n%s==>%s %s%s%s\n' "$BLUE$BOLD" "$RESET" "$BOLD" "$*" "$RESET"; }
+ok()      { printf '%s✓%s %s\n' "$GREEN" "$RESET" "$*"; }
+warn()    { printf '%s!%s %s\n' "$YELLOW" "$RESET" "$*"; }
+info()    { printf '%si%s %s\n' "$CYAN" "$RESET" "$*"; }
+err()     { printf '%s✗%s %s\n' "$RED" "$RESET" "$*" >&2; }
+die()     { err "$*"; exit 1; }
+need()    { command -v "$1" >/dev/null 2>&1; }
+
+confirm() {
+  local prompt="${1:-Continue?}" default="${2:-n}" reply suffix
+  [[ "$default" == y ]] && suffix="[Y/n]" || suffix="[y/N]"
+  read -r -p "$prompt $suffix " reply
+  case "$reply" in
+    [yY]|[yY][eE][sS]) return 0 ;;
+    [nN]|[nN][oO]) return 1 ;;
+    '') [[ "$default" == y ]] ;;
+    *) return 1 ;;
+  esac
+}
+
+ensure_homebrew_env() {
+  need brew && return 0
+  if [[ -x /opt/homebrew/bin/brew ]]; then eval "$(/opt/homebrew/bin/brew shellenv)"; fi
+  if [[ -x /usr/local/bin/brew ]]; then eval "$(/usr/local/bin/brew shellenv)"; fi
+}
+
+install_homebrew() {
+  ensure_homebrew_env
+  if need brew; then ok "Homebrew installed"; return 0; fi
+  header "Installing Homebrew"
+  NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  ensure_homebrew_env
+  need brew || die "Homebrew installed, but brew is still not available in PATH"
+}
+
+run_brew_bundle() {
+  [[ -f "$BREWFILE" ]] || die "Missing Brewfile: $BREWFILE"
+  need brew || die "brew is required"
+  brew bundle --file "$BREWFILE"
+}
+
+configure_git_identity() {
+  [[ -n "${GIT_USER_NAME:-}" && -n "${GIT_PERSONAL_EMAIL:-}" ]] || {
+    warn "Git identity not configured; copy .env.example to .env (see ENV.md)"
+    return 0
+  }
+  mkdir -p "$HOME/.config/dotfiles"
+  git config --file "$HOME/.config/dotfiles/gitconfig-personal" user.name "$GIT_USER_NAME"
+  git config --file "$HOME/.config/dotfiles/gitconfig-personal" user.email "$GIT_PERSONAL_EMAIL"
+  if [[ -n "${GIT_WORK_EMAIL:-}" ]]; then
+    git config --file "$HOME/.config/dotfiles/gitconfig-work" user.name "${GIT_WORK_NAME:-$GIT_USER_NAME}"
+    git config --file "$HOME/.config/dotfiles/gitconfig-work" user.email "$GIT_WORK_EMAIL"
+  fi
+  ok "generated local Git identity configs"
+}
+
+stow_dotfiles() {
+  need stow || die "GNU Stow is required. Install with: brew install stow"
+  [[ -d "$HOME_DIR" ]] || die "Missing home directory: $HOME_DIR"
+  stow --dir "$DOTFILES" --target "$HOME" --restow home
+}
+
+unstow_dotfiles() {
+  need stow || die "GNU Stow is required. Install with: brew install stow"
+  [[ -d "$HOME_DIR" ]] || die "Missing home directory: $HOME_DIR"
+  stow --dir "$DOTFILES" --target "$HOME" --delete home
+}
+
+# ── Commands ─────────────────────────────────────────────────────────────────
+cmd_init() {
+  header "Initializing dotfiles"
+  install_homebrew
+  header "Installing packages"
+  run_brew_bundle
+  for extra in "$PACKAGES_DIR"/Brewfile.*; do
+    [[ -f "$extra" ]] || continue
+    confirm "Install extra package file $(basename "$extra")?" n && brew bundle --file "$extra"
+  done
+  header "Stowing dotfiles"
+  stow_dotfiles
+  configure_git_identity
+  if need pi; then
+    header "Updating pi"
+    (cd "$DOTFILES" && pi update) || warn "pi update failed"
+  fi
+  cmd_doctor
+}
+
+cmd_update() {
+  header "Updating dotfiles repo"
+  git -C "$DOTFILES" pull --ff-only || warn "git pull failed or repo is already up to date"
+
+  if need brew; then
+    confirm "Run brew update?" y && brew update
+    header "Applying Brewfile"
+    run_brew_bundle
+    confirm "Run brew upgrade?" n && brew upgrade
+  else
+    warn "brew not found; skipping packages"
+  fi
+
+  header "Restowing dotfiles"
+  stow_dotfiles
+
+  if need pi; then
+    header "Updating pi"
+    (cd "$DOTFILES" && pi update) || warn "pi update failed"
+    local sync_skill="$HOME_DIR/.pi/agent/skills/sync-pocock-skills/SKILL.md"
+    if [[ -f "$sync_skill" ]] && confirm "Run pi skills sync?" n; then
+      (cd "$DOTFILES" && pi -p --no-skills --skill "$sync_skill" "/skill:sync-pocock-skills") || warn "pi skills sync failed"
+    fi
+  fi
+
+  cmd_doctor
+}
+
+cmd_doctor() {
+  header "Diagnostics"
+  local failed=0 tool
+
+  for tool in git brew stow omp pi nvim tmux node npm bun; do
+    if need "$tool"; then ok "$tool available"; else warn "$tool missing"; fi
+  done
+
+  [[ -d "$DOTFILES" ]] && ok "dotfiles dir exists: $DOTFILES" || { err "missing dotfiles dir: $DOTFILES"; failed=1; }
+  [[ -d "$HOME_DIR" ]] && ok "home/ exists" || { err "missing home/: $HOME_DIR"; failed=1; }
+  [[ -f "$BREWFILE" ]] && ok "Brewfile exists" || { err "missing Brewfile: $BREWFILE"; failed=1; }
+  [[ -d "$PI_DIR" ]] && ok ".pi remains at repo root" || warn ".pi not found at repo root"
+
+  if [[ "$DOTFILES" != "$SCRIPT_DIR" ]]; then warn "DOTFILES override differs from script dir: $DOTFILES != $SCRIPT_DIR"; fi
+
+  if find "$HOME" -maxdepth 3 -xtype l 2>/dev/null | grep -q .; then
+    warn "broken symlinks detected; inspect with: find ~ -maxdepth 3 -xtype l"
+  else
+    ok "no broken symlinks under ~ maxdepth 3"
+  fi
+
+  if command -v "$SCRIPT_NAME" >/dev/null 2>&1; then ok "$SCRIPT_NAME is in PATH"; else warn "$SCRIPT_NAME is not in PATH; run: ./dot link"; fi
+
+  [[ "$failed" -eq 0 ]] && header "Critical checks passed" || header "Found $failed critical issue(s)"
+  return "$failed"
+}
+
+cmd_stow()   { header "Stowing dotfiles"; stow_dotfiles; ok "dotfiles stowed"; }
+cmd_unstow() { header "Unstowing dotfiles"; unstow_dotfiles; ok "dotfiles unstowed"; }
+cmd_edit()   { "${EDITOR:-code}" "$DOTFILES"; }
+
+cmd_link() {
+  header "Linking dot command"
+  local dir="$HOME/.local/bin" link="$dir/$SCRIPT_NAME"
+  mkdir -p "$dir"
+  ln -sfn "$DOTFILES/$SCRIPT_NAME" "$link"
+  ok "linked $link -> $DOTFILES/$SCRIPT_NAME"
+  case ":$PATH:" in *":$dir:"*) ;; *) warn "$dir is not in PATH" ;; esac
+}
+
+cmd_unlink() {
+  header "Unlinking dot command"
+  local found=0 path
+  for path in "$HOME/.local/bin/$SCRIPT_NAME" /usr/local/bin/$SCRIPT_NAME; do
+    if [[ -L "$path" ]]; then rm "$path"; ok "removed $path"; found=1; fi
+  done
+  [[ "$found" -eq 1 ]] || warn "no symlink found"
+}
+
+backup_brewfile() {
+  [[ -f "$BREWFILE" ]] || die "Missing Brewfile: $BREWFILE"
+  cp "$BREWFILE" "$BREWFILE.backup.$(date +%Y%m%d_%H%M%S)"
+}
+
+cmd_package() {
+  local sub="${1:-help}"; shift || true
+  case "$sub" in
+    list)
+      [[ -f "$BREWFILE" ]] || die "Missing Brewfile: $BREWFILE"
+      grep -Ev '^\s*(#|$)' "$BREWFILE" || true
+      ;;
+    add)
+      local type="${1:-}" name="${2:-}"
+      [[ -n "$type" && -n "$name" ]] || die "Usage: dot package add <brew|cask|tap|mas|vscode> <name>"
+      mkdir -p "$PACKAGES_DIR"; touch "$BREWFILE"
+      if grep -Eq "^${type}[[:space:]]+\"${name}\"" "$BREWFILE"; then ok "$type $name already exists"; else printf '%s "%s"\n' "$type" "$name" >> "$BREWFILE"; ok "added $type $name"; fi
+      ;;
+    remove)
+      local name="${1:-}"
+      [[ -n "$name" ]] || die "Usage: dot package remove <name>"
+      backup_brewfile
+      awk -v name="$name" 'index($0, "\"" name "\"") == 0 { print }' "$BREWFILE" > "$BREWFILE.tmp"
+      mv "$BREWFILE.tmp" "$BREWFILE"
+      ok "removed entries matching $name"
+      ;;
+    update|install)
+      run_brew_bundle
+      ;;
+    help|-h|--help)
+      cat <<'USAGE'
+Usage: dot package <command>
+
+Commands:
+  list                         Show active Brewfile entries
+  add <type> <name>            Add an entry, e.g. dot package add brew ripgrep
+  remove <name>                Remove entries matching quoted name, with backup
+  update                       Run brew bundle for packages/Brewfile
+USAGE
+      ;;
+    *) die "Unknown package command: $sub" ;;
+  esac
+}
+
+cmd_pi() {
+  local sub="${1:-help}"; shift || true
+  need pi || die "pi is not installed"
+  case "$sub" in
+    update) (cd "$DOTFILES" && pi update) ;;
+    sync-skills)
+      local sync_skill="$HOME_DIR/.pi/agent/skills/sync-pocock-skills/SKILL.md"
+      [[ -f "$sync_skill" ]] || die "sync skill not found: $sync_skill"
+      (cd "$DOTFILES" && pi -p --no-skills --skill "$sync_skill" "/skill:sync-pocock-skills")
+      ;;
+    doctor) cmd_doctor ;;
+    help|-h|--help) printf 'Usage: dot pi <update|sync-skills|doctor>\n' ;;
+    *) die "Unknown pi command: $sub" ;;
+  esac
+}
+
+cmd_completions() {
+  cat <<'EOF'
+# zsh completion: save as ~/.zsh/completions/_dot or source from your zshrc
+#compdef dot
+_dot() {
+  local -a cmds
+  cmds=(init update stow unstow doctor link unlink edit package pi completions help)
+  _describe 'command' cmds
+}
+_dot "$@"
+EOF
+}
+
+usage() {
+  cat <<USAGE
+${BOLD}${SCRIPT_NAME}${RESET} ${VERSION} - dotfiles manager
+
+Usage: dot <command>
+
+Commands:
+  init              Install packages, stow configs, run doctor
+  update            Pull repo, update packages, restow, update pi
+  stow              Symlink home/ into ~ using GNU Stow
+  unstow            Remove symlinks created from home/
+  doctor            Check required tools and common problems
+  link              Link dot into ~/.local/bin
+  unlink            Remove dot symlinks
+  edit              Open dotfiles in \$EDITOR
+  package           Manage packages/Brewfile entries
+  pi                Pi-specific update/sync helpers
+  completions       Print shell completion snippet
+  help              Show this help
+USAGE
+}
+
+main() {
+  local cmd="${1:-help}"; shift || true
+  case "$cmd" in
+    init) cmd_init "$@" ;;
+    update) cmd_update "$@" ;;
+    stow) cmd_stow "$@" ;;
+    unstow|unstow-dotfiles) cmd_unstow "$@" ;;
+    doctor) cmd_doctor "$@" ;;
+    link) cmd_link "$@" ;;
+    unlink) cmd_unlink "$@" ;;
+    edit) cmd_edit "$@" ;;
+    package|pkg) cmd_package "$@" ;;
+    pi) cmd_pi "$@" ;;
+    completions|completion) cmd_completions "$@" ;;
+    help|-h|--help) usage ;;
+    version|--version) echo "$VERSION" ;;
+    *) usage; die "Unknown command: $cmd" ;;
+  esac
+}
+
+main "$@"

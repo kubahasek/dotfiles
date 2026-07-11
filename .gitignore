@@ -1,1 +1,49 @@
-./nvim/plugin
+# macOS
+.DS_Store
+
+# Local environment / personal data
+.env
+.env.*
+!.env.example
+
+# Runtime-critical local pi directory: keep at repo root, but do not commit secrets/generated state
+.pi/agent/auth.json
+.pi/agent/trust.json
+.pi/agent/sessions/
+.pi/agent/bin/
+.pi/agent/npm/
+.pi/agent/mcp-oauth/
+.pi/**/mcp-oauth/
+.pi/**/tokens.json
+.pi/agent/mcp-cache.json
+.pi/agent/mcp-onboarding.json
+.pi/agent/run-history.jsonl
+.pi/agent/skills
+.pi/pi-acp/session-map.json
+
+# Oh My Pi: keep config at repo root, ignore runtime DBs/logs/accounts
+.omp/agent/*
+!.omp/agent/config.yml
+.omp/logs/
+.omp/openai-accounts/
+.omp/wt/
+
+# Fish shell - universal variables can contain private/history data
+home/.config/fish/fish_variables
+
+# App secrets / generated state
+home/raycast/config.json
+home/raycast/extensions/**/node_modules/
+home/opencode/node_modules/
+home/opencode/.opencode/
+home/opencode/antigravity-accounts.json
+home/.config/cmux/*.bak
+home/.config/zed/prompts/
+*.mdb
+
+# Nested repos / generated editor state
+home/.config/nvim/.git/
+archive/**/.git/
+
+# Node modules anywhere
+node_modules/

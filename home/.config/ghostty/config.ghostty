@@ -1,0 +1,85 @@
+# This is the configuration file for Ghostty.
+#
+# This template file has been automatically created at the following
+# path since Ghostty couldn't find any existing config files on your system:
+#
+#   ~/Library/Application Support/com.mitchellh.ghostty/config
+#
+# The template does not set any default options, since Ghostty ships
+# with sensible defaults for all options. Users should only need to set
+# options that they want to change from the default.
+#
+# Run `ghostty +show-config --default --docs` to view a list of
+# all available config options and their default values.
+#
+# Additionally, each config option is also explained in detail
+# on Ghostty's website, at https://ghostty.org/docs/config.
+#
+# Ghostty can reload the configuration while running by using the menu
+# options or the bound key (default: Command + Shift + comma on macOS and
+# Control + Shift + comma on other platforms). Not all config options can be
+# reloaded while running; some only apply to new windows and others may require
+# a full restart to take effect.
+
+# Config syntax crash course
+# ==========================
+# # The config file consists of simple key-value pairs,
+# # separated by equals signs.
+# font-family = Iosevka
+# window-padding-x = 2
+#
+# # Spacing around the equals sign does not matter.
+# # All of these are identical:
+# key=value
+# key= value
+# key =value
+# key = value
+#
+# # Any line beginning with a # is a comment. It's not possible to put
+# # a comment after a config option, since it would be interpreted as a
+# # part of the value. For example, this will have a value of "#123abc":
+# background = #123abc
+#
+# # Empty values are used to reset config keys to default.
+# key =
+#
+# # Some config options have unique syntaxes for their value,
+# # which is explained in the docs for that config option.
+# # Just for example:
+# resize-overlay-duration = 4s 200ms
+
+window-width=242
+window-height=66
+auto-update-channel = tip
+shell-integration=fish
+command = /opt/homebrew/bin/fish
+# Focus split panes with CMD+arrow keys
+keybind = cmd+left=goto_split:left
+keybind = cmd+right=goto_split:right
+keybind = cmd+up=goto_split:top
+keybind = cmd+down=goto_split:bottom
+keybind = cmd+plus=unbind
+# Resize splits
+keybind = cmd+shift+left=text:\x01\x1b[D
+keybind = cmd+shift+right=text:\x01\x1b[C
+keybind = cmd+shift+up=text:\x01\x1b[A
+keybind = cmd+shift+down=text:\x01\x1b[B
+theme = light:Vercel Light,dark:Vercel Dark
+macos-icon=xray
+
+# Font
+font-family ="SFMono Nerd Font"
+font-size = 13
+adjust-cell-height = 20%
+
+# Bold
+bold-is-bright = true
+
+# Window
+window-padding-x = 2
+window-padding-y = 2
+window-decoration = true
+
+macos-option-as-alt = false
+keybind = alt+h=text:\x1bh
+keybind = alt+l=text:\x1bl

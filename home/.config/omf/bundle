@@ -1,0 +1,7 @@
+package composer
+package foreign-env
+package https://github.com/Asim-Tahir/opencode.fish
+package nvm
+theme clearance
+theme default
+theme robbyrussell
