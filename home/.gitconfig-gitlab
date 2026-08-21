@@ -1,2 +1,3 @@
-[include]
-    path = ~/.config/dotfiles/gitconfig-work
+[user]
+    name = Jakub Hašek
+    email = hasek@akip.cz

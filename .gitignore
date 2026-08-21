@@ -39,11 +39,19 @@ home/opencode/.opencode/
 home/opencode/antigravity-accounts.json
 home/.config/cmux/*.bak
 home/.config/zed/prompts/
+home/.config/herdr/*
+!home/.config/herdr/config.toml
 *.mdb
 
 # Nested repos / generated editor state
 home/.config/nvim/.git/
 archive/**/.git/
+
+# Pi runtime / generated state
+.pi/agent/cache/
+.pi/agent/missions/
+.pi/agent/models-store.json
+.pi/agent/howaboua-pi-stuff-changelog.json
 
 # Node modules anywhere
 node_modules/

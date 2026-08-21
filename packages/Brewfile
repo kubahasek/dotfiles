@@ -1,17 +1,20 @@
 tap "anomalyco/tap"
 tap "blackmann/brew"
 tap "can1357/tap"
+tap "darrylmorley/whatcable"
+tap "ellipse-software/tap", trusted: true
 tap "eugenmayer/dockersync"
 tap "exolnet/deprecated"
 tap "fsouza/prettierd"
 tap "libsql/sqld"
+tap "nikitabobko/tap"
 tap "oven-sh/bun"
 tap "planetscale/tap"
 tap "shivammathur/php"
 tap "steipete/tap"
 tap "stripe/stripe-cli"
 tap "tursodatabase/tap"
-tap "tw93/tap"
+tap "tw93/tap", trusted: { formulae: ["mole"] }
 # Codec library for encoding and decoding AV1 video streams
 brew "aom"
 # Asynchronous DNS library
@@ -28,6 +31,8 @@ brew "bitwarden-cli"
 brew "boost"
 # Resource monitor. C++ version and continuation of bashtop and bpytop
 brew "btop"
+# Software library to render fonts
+brew "freetype"
 # Vector graphics library with cross-device output support
 brew "cairo"
 # New file format for still image compression
@@ -40,6 +45,8 @@ brew "php", link: false
 brew "composer"
 # Platform keystore credential helper for Docker
 brew "docker-credential-helper"
+# View disk space usage and delete unwanted data, fast
+brew "dua-cli"
 # Collection of reusable C++ library artifacts developed at Facebook
 brew "folly"
 # C++14 implementation of the TLS-1.3 standard
@@ -52,6 +59,8 @@ brew "fbthrift"
 brew "fb303"
 # Shared library for Watchman and Eden projects
 brew "edencommon"
+# SDL2 compatibility layer that uses SDL3 behind the scenes
+brew "sdl2-compat"
 # Play, record, convert, and stream select audio and video codecs
 brew "ffmpeg"
 # User-friendly command-line shell for UNIX-like operating systems
@@ -60,18 +69,22 @@ brew "fish"
 brew "fzf"
 # GitHub command-line tool
 brew "gh"
-# Distributed revision control system
-brew "git"
-# Open-source GitLab command-line tool
-brew "glab"
 # OpenType text shaping engine
 brew "harfbuzz"
-# Simple terminal UI for git commands
-brew "lazygit"
 # Library for JPEG-2000 image manipulation
 brew "openjpeg"
 # Image processing and image analysis library
 brew "leptonica"
+# OCR (Optical Character Recognition) engine
+brew "tesseract"
+# Distributed revision control system
+brew "git"
+# Open-source GitLab command-line tool
+brew "glab"
+# Agent multiplexer that lives in your terminal
+brew "herdr"
+# Simple terminal UI for git commands
+brew "lazygit"
 # Subtitle renderer for the ASS/SSA subtitle format
 brew "libass"
 # Provides library functionality for FIDO U2F & FIDO 2.0, including USB
@@ -80,6 +93,10 @@ brew "libfido2"
 brew "lima"
 # Apple Silicon Monitor Top written in Go Lang
 brew "mactop"
+# Deep clean and optimize your Mac
+brew "mole"
+# Lightweight PDF and XPS viewer
+brew "mupdf-tools"
 # Open source relational database management system
 brew "mysql"
 # Ambitious Vim-fork focused on extensibility and agility
@@ -92,6 +109,8 @@ brew "openvino"
 brew "pandoc"
 # General-purpose scripting language
 brew "php@8.1", link: true
+# Package compiler and linker metadata toolkit
+brew "pkgconf"
 # Code formatter for JavaScript, CSS, JSON, GraphQL, Markdown, YAML
 brew "prettier"
 # Prettier daemon
@@ -102,14 +121,14 @@ brew "pure"
 brew "python@3.11"
 # Search tool like grep and The Silver Searcher
 brew "ripgrep"
+# SMART hard drive monitoring
+brew "smartmontools"
 # Cross-shell prompt for astronauts
 brew "starship"
 # Organize software neatly under a single directory tree (e.g. /usr/local)
 brew "stow"
 # Send macOS User Notifications from the command-line
 brew "terminal-notifier"
-# OCR (Optical Character Recognition) engine
-brew "tesseract"
 # Terminal multiplexer
 brew "tmux"
 # File synchronization tool
@@ -118,6 +137,8 @@ brew "unison"
 brew "universal-ctags"
 # Generate your Xcode project from a spec file and your folder structure
 brew "xcodegen"
+# AeroSpace is an i3-like tiling window manager for macOS
+cask "nikitabobko/tap/aerospace", trusted: true
 # Menu bar tool to limit maximum charging percentage
 cask "aldente"
 # Enable Windows-like alt-tab
@@ -134,8 +155,7 @@ cask "cleanmymac"
 cask "cleanshot"
 # Tool to show live information about the batteries in various devices
 cask "coconutbattery"
-# Menu bar usage monitor for Codex and Claude
-cask "steipete/tap/codexbar"
+cask "codexbar"
 # Write, edit, and chat about your code with AI
 cask "cursor"
 # Voice and text chat software
@@ -155,8 +175,12 @@ cask "google-chrome"
 cask "httpie-desktop"
 # Free and open-source media player
 cask "iina"
+# Keyboard customiser
+cask "karabiner-elements"
 # Free cross-platform office suite, fresh version
 cask "libreoffice"
+# Full TeX Live distribution with GUI applications
+cask "mactex"
 # Provides updates to various Microsoft products
 cask "microsoft-auto-update"
 # Spreadsheet software
@@ -185,26 +209,14 @@ cask "tableplus"
 cask "the-unarchiver"
 # Rust-based terminal
 cask "warp"
+# Menu bar app for USB-C cable diagnostics
+cask "darrylmorley/whatcable/whatcable", trusted: true
 # Native desktop client for WhatsApp
 cask "whatsapp"
 # Multiplayer code editor
 cask "zed"
 # Multiplayer code editor
 cask "zed@preview"
-vscode "angular.ng-template"
-vscode "anysphere.remote-ssh"
-vscode "bmewburn.vscode-intelephense-client"
-vscode "bradlc.vscode-tailwindcss"
-vscode "dbaeumer.vscode-eslint"
-vscode "eamodio.gitlens"
-vscode "esbenp.prettier-vscode"
-vscode "leonardssh.vscord"
-vscode "ms-azuretools.vscode-containers"
-vscode "ms-azuretools.vscode-docker"
-vscode "pkief.material-icon-theme"
-vscode "usernamehw.errorlens"
-vscode "vscodevim.vim"
-vscode "wakatime.vscode-wakatime"
 npm "@earendil-works/pi-coding-agent"
 npm "@openai/codex"
 npm "@payloadr/cli"
