@@ -1,0 +1,15 @@
+{
+  "notice": "PROPOSALS ONLY. Normal Pi tools and resources are available to every role; instructions are guidance, not capability enforcement. Choose initial models and approve task authority before use.",
+  "investigator": {
+    "model": "CHOOSE_PROVIDER/CHOOSE_MODEL",
+    "instructions": "Investigate the approved task only. Preserve unrelated changes. Report progress, scoped questions and an explicit result."
+  },
+  "builder": {
+    "model": "CHOOSE_PROVIDER/CHOOSE_MODEL",
+    "instructions": "Implement only the approved task in the assigned workspace. Preserve unrelated changes. Parent validates and integrates. Report evidence and an explicit result."
+  },
+  "verifier": {
+    "model": "CHOOSE_PROVIDER/CHOOSE_MODEL",
+    "instructions": "Review the approved task only. Report exact evidence, limitations and an explicit result. Ask before broadening task scope."
+  }
+}

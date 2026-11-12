@@ -1,0 +1,80 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import net from 'node:net';
+import { Store } from '../src/storage.mjs';
+import { Domain, profile, resourceKey } from '../src/domain.mjs';
+import { call, serve } from '../src/transport.mjs';
+import { stableDirectoryPath } from '../src/adapters.mjs';
+import { temp, p, fixture } from './support.mjs';
+test('durable socket protocol, immutable poll, stale generation, sequential followups and restart', async t => {
+  const f = fixture(); let server = await serve(f.d, f.dir); t.after(async () => { await server.close(); fs.rmSync(f.dir, { recursive: true }); });
+  const socket = path.join(f.dir, 'control.sock');
+  f.request('task', { text: 'Initial' });
+  const snapshot = { group: 'g', agent: 'a', token: f.token, requestId: 'snapshot', op: 'poll' };
+  const original = await call(socket, snapshot);
+  f.childRequest('ack', { command: 'r2' });
+  assert.equal((await call(socket, snapshot)).commands.items.length, 0);
+  f.childRequest('request', { question: 'q', kind: 'permission', scope: 'task t', text: 'Need write?' });
+  const questionSnapshot = { ...snapshot, requestId: 'question-snapshot' };
+  const beforeAnswer = await call(socket, questionSnapshot);
+  assert.throws(() => f.childRequest('result', { status: 'success', text: 'done' }), /Unanswered/);
+  f.request('answer', { question: 'q', text: 'No, remain observer' });
+  assert.notDeepEqual(await call(socket, questionSnapshot), beforeAnswer);
+  assert.throws(() => f.request('followup', { task: 'next', text: 'Continue' }), /Previous task/);
+  for (const c of f.request('poll').commands.items) f.childRequest('ack', { command: c.id });
+  f.childRequest('result', { status: 'incomplete', text: 'Need writer' }); f.childRequest('event', { kind: 'idle', text: 'settled' });
+  f.request('followup', { task: 'next', text: 'Continue' });
+  assert.throws(() => f.request('followup', { task: 'third', text: 'Continue' }), /Previous task/);
+  assert.throws(() => f.childRequest('result', { task: 't', generation: 1, status: 'success', text: 'delayed old result' }), /Stale/);
+  assert.throws(() => f.childRequest('event', { task: 't', generation: 1, kind: 'idle', text: 'late' }), /Stale/);
+  f.request('launch-intent'); await server.close();
+  const recovered = new Domain(new Store(f.dir)); server = await serve(recovered, f.dir);
+  assert.equal((await call(socket, snapshot)).agent.task, 'next');
+  assert.equal((await call(socket, questionSnapshot)).agent.generation, 2);
+  assert.equal(recovered.store.state.agents.a.launch.status, 'pending');
+  await assert.rejects(call(socket, { ...snapshot, op: 'launch-intent', requestId: 'retry-launch' }), /reserved/);
+});
+test('actor namespaces, cross-agent/group rejection, reserved ids and own-property lookup', () => {
+  const f = fixture('parent');
+  const r = { group: 'g', agent: 'parent', requestId: 'collision', op: 'overview' };
+  f.d.dispatch({ ...r, token: f.token });
+  assert.throws(() => f.d.dispatch({ ...r, token: f.child }), /Parent required/);
+  assert.throws(() => f.request('poll', { agent: 'other' }, f.child), /Unauthorized/);
+  f.d.bootstrap('other'); assert.throws(() => f.request('poll', { group: 'other' }, f.child), /Unauthorized/);
+  for (const reserved of ['__proto__', 'constructor', 'prototype']) {
+    assert.throws(() => f.request('answer', { question: reserved, text: 'attack' }), /Invalid id/);
+    assert.throws(() => f.request('create', { agent: reserved, task: 't', profile: p }), /Invalid id/);
+  }
+  assert.equal(Object.prototype.answer, undefined);
+  assert.notEqual(resourceKey('a-b', 'c'), resourceKey('a', 'b-c'));
+  for (const op of ['usage', 'ledger', 'totals']) assert.throws(() => f.request(op), /Unknown operation/);
+  fs.rmSync(f.dir, { recursive: true });
+});
+test('normal Pi profiles have no capability ceilings; canonical roots remain stable', () => {
+  const dir = fs.realpathSync(temp()); assert.equal(stableDirectoryPath(dir), dir);
+  assert.throws(() => stableDirectoryPath(path.join(dir, 'root\u00a0name')), /normalization-unstable/);
+  assert.deepEqual(profile(p), p); assert.throws(() => profile({ ...p, ceiling: 'writer' }), /only model and instructions/);
+  fs.rmSync(dir, { recursive: true });
+});
+test('absolute socket deadline and aggregate client bound', async t => {
+  const dir = temp(), service = await serve(new Domain(new Store(dir)), dir, { frameMs: 100, maxClients: 2 });
+  const sockets = []; t.after(async () => { sockets.forEach(s => s.destroy()); await service.close(); fs.rmSync(dir, { recursive: true }); });
+  const open = () => { const s = net.createConnection(path.join(dir, 'control.sock')); s.on('error', () => {}); sockets.push(s); return s; };
+  const a = open(), b = open(); await new Promise(r => setTimeout(r, 20)); const c = open();
+  await new Promise(r => setTimeout(r, 20)); assert.equal(service.clients.size, 2); assert.equal(c.destroyed, true);
+  const trickle = setInterval(() => { if (!a.destroyed) a.write(' '); }, 10);
+  await new Promise(r => setTimeout(r, 120)); clearInterval(trickle);
+  assert.equal(a.destroyed, true); assert.equal(b.destroyed, true);
+});
+test('post-rename fsync failure poisons writer; disk commit recovered, never overwritten', () => {
+  const dir = temp(); let renames = 0;
+  const io = { ...fs, renameSync(...args) { fs.renameSync(...args); renames++; }, fsyncSync(fd) { if (renames) throw Error('injected post-rename'); fs.fsyncSync(fd); } };
+  const s = new Store(dir, io);
+  assert.throws(() => s.transaction(n => { n.groups.committed = {}; return null; }), /injected/);
+  assert.throws(() => s.transaction(n => { n.groups.overwrite = {}; return null; }), /fail-stop/);
+  const recovered = new Store(dir); assert.ok(recovered.state.groups.committed); assert.equal(recovered.state.groups.overwrite, undefined);
+  fs.rmSync(dir, { recursive: true });
+});

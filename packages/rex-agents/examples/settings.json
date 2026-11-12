@@ -1,0 +1,17 @@
+{
+  "version": 3,
+  "piExecutable": "/ABSOLUTE/PATH/TO/pi",
+  "stateRoot": "/ABSOLUTE/PRIVATE/STATE/rex-agents-v3",
+  "worktreeRoot": "/ABSOLUTE/PRIVATE/WORKTREES/rex-agents-v3",
+  "panesPerTab": 3,
+  "profiles": {
+    "investigator": {
+      "model": "CHOOSE_PROVIDER/CHOOSE_MODEL",
+      "instructions": "Investigate only the assigned task. Preserve unrelated changes. Report progress, scoped questions and an explicit result."
+    },
+    "builder": {
+      "model": "CHOOSE_PROVIDER/CHOOSE_MODEL",
+      "instructions": "Implement only the approved task in the explicitly assigned workspace. Preserve unrelated changes. Parent reviews and integrates. Report focused validation and an explicit result."
+    }
+  }
+}
