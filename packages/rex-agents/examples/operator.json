@@ -1,0 +1,21 @@
+{
+  "version": 3,
+  "stateDir": "/ABSOLUTE/PRIVATE/rex-agents-state-v3",
+  "worktreeRoot": "/ABSOLUTE/PRIVATE/rex-agents-worktrees-v3",
+  "repo": "/ABSOLUTE/REPOSITORY",
+  "group": "approved-task-group",
+  "rexSession": "session:REPLACE_WITH_FULL_LOCAL_ID",
+  "piExecutable": "/ABSOLUTE/PATH/TO/pi",
+  "panesPerTab": 3,
+  "knownFreeModels": [],
+  "profiles": {
+    "investigator": {
+      "model": "CHOOSE_PROVIDER/CHOOSE_MODEL",
+      "instructions": "Investigate only the approved task in the assigned workspace. Report scoped questions and an explicit result."
+    },
+    "builder": {
+      "model": "CHOOSE_PROVIDER/CHOOSE_MODEL",
+      "instructions": "Implement only the approved task in the explicitly assigned workspace. Preserve unrelated changes. Parent validates and integrates. Report evidence and an explicit result."
+    }
+  }
+}

@@ -1,0 +1,41 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import { Journal } from '../src/journal.mjs';
+import { Domain } from '../src/domain.mjs';
+import { Store } from '../src/storage.mjs';
+import { transcriptUsage, ingestUsage } from '../src/usage.mjs';
+import { fixture } from './support.mjs';
+
+test('complete child snapshots: known/unknown/free, repeated scans, reconnect, stale updates and followup reuse', async t => {
+  const f = fixture(); t.after(() => fs.rmSync(f.dir, { recursive: true }));
+  const entries = [], rates = { input: 1, output: 2, cacheRead: 3, cacheWrite: 4 };
+  const ctx = { sessionManager: { getSessionId: () => 'session', getEntries: () => entries }, modelRegistry: { find: (_p, model) => model === 'unknown' ? null : { cost: model === 'free' ? { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 } : rates } } };
+  const add = (id, model) => entries.push({ type: 'message', id, message: { role: 'assistant', provider: 'local', model, usage: { input: 10, output: 20, cacheRead: 30, cacheWrite: 40 } } });
+  add('one', 'priced'); add('two', 'unknown'); add('three', 'free');
+  entries.push(entries[0], { type: 'message', id: 'nested', message: { role: 'toolResult', usage: entries[0].message.usage } });
+  assert.equal(transcriptUsage(ctx).unknownPrices, 2);
+  const options = { identity: { group: 'g', agent: 'a', task: 't', generation: 1 }, knownFreeModels: ['local/free'] };
+  let j = new Journal(path.join(f.dir, 'child'));
+  ingestUsage(ctx, j, null, options); const old = j.state.outbox[0];
+  const before = fs.readFileSync(j.store.file, 'utf8'); ingestUsage(ctx, j, null, options);
+  assert.equal(fs.readFileSync(j.store.file, 'utf8'), before);
+  await j.flush(r => f.d.dispatch({ ...r, token: f.child }));
+  const coordinatorBefore = fs.readFileSync(f.d.store.file, 'utf8');
+  f.d.dispatch({ ...old, requestId: 'repeated', token: f.child });
+  assert.equal(fs.readFileSync(f.d.store.file, 'utf8'), coordinatorBefore);
+  assert.equal(Object.keys(f.d.store.state.receipts).some(k => k.includes(old.requestId)), false);
+  const usage = f.request('inspect', { offset: 0, agent: 'a' }).items[0].usage;
+  assert.equal(usage.messages, 3); assert.equal(usage.unknownPrices, 1); assert.ok(Math.abs(usage.knownEstimate - 0.0003) < 1e-12); assert.equal(usage.estimate, null);
+  assert.deepEqual(usage, f.request('overview').children);
+  // Followup retains the same session totals, independently of task generation.
+  f.childRequest('result', { status: 'success', text: 'done' }); f.childRequest('event', { kind: 'idle', text: 'settled' });
+  f.request('followup', { task: 'next', text: 'Continue' });
+  add('four', 'priced'); j = new Journal(path.join(f.dir, 'child'));
+  ingestUsage(ctx, j, null, options); await j.flush(r => f.d.dispatch({ ...r, token: f.child }));
+  const recovered = new Domain(new Store(f.dir));
+  recovered.dispatch({ ...old, token: f.child, requestId: 'stale' });
+  assert.equal(f.request('overview').children.messages, 4);
+  assert.equal(recovered.store.state.agents.a.usageSnapshots.session.summary.messages, 4);
+});
